@@ -41,20 +41,20 @@ def delete_user(db: Session, user_id: int):
 
 
 # CRUD операции для модели UserInfo
-def get_user_info(db: Session, user_id: int):
-    return db.query(model.UserInfo).filter(model.UserInfo.user_id == user_id).first()
+def get_user_info(db: Session, id: int):
+    return db.query(model.UserInfo).filter(model.UserInfo.id == id).first()
 
 
-def create_user_info(db: Session, user_info: schemas.UserInfoCreate, user_id: int):
-    db_user_info = model.UserInfo(**user_info.dict(), user_id=user_id)
+def create_user_info(db: Session, user_info: schemas.UserInfoCreate, id: int):
+    db_user_info = model.UserInfo(**user_info.dict(), id=id)
     db.add(db_user_info)
     db.commit()
     db.refresh(db_user_info)
     return db_user_info
 
 
-def update_user_info(db: Session, user_id: int, user_info: schemas.UserInfoSchema):
-    db_user_info = db.query(model.UserInfo).filter(model.UserInfo.user_id == user_id).first()
+def update_user_info(db: Session, id: int, user_info: schemas.UserInfoSchema):
+    db_user_info = db.query(model.UserInfo).filter(model.UserInfo.id == id).first()
     if db_user_info:
         update_data = user_info.dict(exclude_unset=True)
         for key, value in update_data.items():
@@ -66,7 +66,7 @@ def update_user_info(db: Session, user_id: int, user_info: schemas.UserInfoSchem
 
 # CRUD операции для модели Auth
 def get_auth(db: Session, username: str):
-    return db.query(model.Auth).filter(model.Auth.username == username).first()
+    return db.query(model.Auth).filter(model.Auth.login == username).first()
 
 
 def create_auth(db: Session, auth: schemas.AuthSchema):
@@ -79,7 +79,7 @@ def create_auth(db: Session, auth: schemas.AuthSchema):
 
 # CRUD операции для модели Card
 def get_card(db: Session, card_number: str):
-    return db.query(model.Card).filter(model.Card.card_number == card_number).first()
+    return db.query(model.Card).filter(model.Card.card_num == card_number).first()
 
 
 def create_card(db: Session, card: schemas.CardSchema):
@@ -92,11 +92,11 @@ def create_card(db: Session, card: schemas.CardSchema):
 
 # CRUD операции для модели Session
 def get_session(db: Session, session_id: str):
-    return db.query(Session).filter(Session.session_id == session_id).first()
+    return db.query(model.Session).filter(model.Session.id == session_id).first()
 
 
 def create_session(db: Session, session: schemas.SessionSchema):
-    db_session = Session(**session.dict())
+    db_session = model.Session(**session.dict())
     db.add(db_session)
     db.commit()
     db.refresh(db_session)
@@ -104,7 +104,7 @@ def create_session(db: Session, session: schemas.SessionSchema):
 
 
 def delete_session(db: Session, session_id: str):
-    db_session = db.query(Session).filter(Session.session_id == session_id).first()
+    db_session = db.query(model.Session).filter(model.Session.id == session_id).first()
     if db_session:
         db.delete(db_session)
         db.commit()
@@ -149,7 +149,7 @@ def delete_transport(db: Session, transport_id: int):
 
 # CRUD операции для модели Snils
 def get_snils(db: Session, snils_number: str):
-    return db.query(model.Snils).filter(model.Snils.snils_number == snils_number).first()
+    return db.query(model.Snils).filter(model.Snils.snils_num == snils_number).first()
 
 
 def create_snils(db: Session, snils: schemas.SnilsSchema):
