@@ -8,14 +8,14 @@ T = TypeVar('T')
 class UserSchema(BaseModel):
     id: int
     date_of_birth: str
-    user_info: Optional["UserInfoSchema"]
+    # user_info: Optional["UserInfoSchema"]
     gender: int
     name: str
     surname: str
     patronymic: Optional[str]
-    card: Optional["CardSchema"]
-    session: Optional[List["SessionSchema"]]
-    snils: Optional["SnilsSchema"]
+    # card: Optional["CardSchema"]
+    # session: Optional[List["SessionSchema"]]
+    # snils: Optional["SnilsSchema"]
 
     class Config:
         orm_mode = True
