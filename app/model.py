@@ -39,9 +39,9 @@ class Auth(Base):
 class Card(Base):
     __tablename__ = 'card'
 
-    user_id = Column(Integer, ForeignKey('user.id'), primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.id'))
     expire_date = Column(Date)
-    card_num = Column(Integer)
+    card_num = Column(Integer, primary_key=True)
 
 
 class Session(Base):
