@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
 from model import User, UserInfo, Auth, Card, Transport, Snils, Session
 from config import SessionLocal
-from schemas import UserCreate, UserInfoCreate, AuthSchema, UserSchema, UserInfoSchema, CardSchema, SessionSchema, \
+from schemas import UserCreate, UserInfoSchema, AuthSchema, UserSchema, UserInfoSchema, CardSchema, SessionSchema, \
     TransportSchema, SnilsSchema
 from fastapi.openapi.docs import get_swagger_ui_html
 router = APIRouter()

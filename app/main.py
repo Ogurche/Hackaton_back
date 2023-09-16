@@ -30,7 +30,6 @@ async def custom_swagger_ui_html():
         title="Custom Swagger UI"
     )
 
-
 @app.get("/openapi.json", include_in_schema=False)
 async def get_openapi():
     return app.openapi()

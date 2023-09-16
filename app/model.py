@@ -26,6 +26,7 @@ class UserInfo(Base):
     phone = Column(Integer)
     user_type = Column(Integer)
     mail = Column(String)
+    site = Column(String)
 
 
 class Auth(Base):

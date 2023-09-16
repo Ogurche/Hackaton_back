@@ -4,7 +4,7 @@ import model
 import schemas
 
 
-# CRUD операции для модели User
+# CRUD операции для модели Userr
 def get_user(db: Session, user_id: int):
     return db.query(model.User).filter(model.User.id == user_id).first()
 
@@ -45,7 +45,7 @@ def get_user_info(db: Session, id: int):
     return db.query(model.UserInfo).filter(model.UserInfo.id == id).first()
 
 
-def create_user_info(db: Session, user_info: schemas.UserInfoCreate, id: int):
+def create_user_info(db: Session, user_info: schemas.UserInfoSchema, id: int):
     db_user_info = model.UserInfo(**user_info.dict(), id=id)
     db.add(db_user_info)
     db.commit()

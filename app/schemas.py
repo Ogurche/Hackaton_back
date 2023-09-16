@@ -21,7 +21,7 @@ class UserSchema(BaseModel):
         orm_mode = True
 
 
-class UserInfoSchema(BaseModel):
+'''class UserInfoSchema(BaseModel):
     id: int
     phone: str
     user_type: int
@@ -29,14 +29,15 @@ class UserInfoSchema(BaseModel):
 
     class Config:
         orm_mode = True
+'''
 
 
-class UserInfoCreate(BaseModel):
-    first_name: str
-    last_name: str
-    age: int
-    city: str
-    phone_number: str
+class UserInfoSchema(BaseModel):
+    id: int
+    phone: str
+    user_type: int
+    mail: str
+    site: str
 
     class Config:
         orm_mode = True
