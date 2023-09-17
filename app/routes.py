@@ -7,7 +7,6 @@ from schemas import UserCreate, UserInfoSchema, AuthSchema, UserSchema, UserInfo
 from fastapi.openapi.docs import get_swagger_ui_html
 router = APIRouter()
 
-
 def get_db():
     db = SessionLocal()
     try:
@@ -36,6 +35,7 @@ async def read_user(user_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="User not found")
     return db_user
 
+# @router.delete()
 
 # UserInfo endpoints
 @router.post("/user_info/")

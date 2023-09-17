@@ -15,12 +15,12 @@ async def home():
     return "За 100 рублей сделаю свой fastapi без orm и крудами"
 
 
-app.include_router(router, prefix="/users", tags=["users"])
-app.include_router(router, prefix="/auth", tags=["auth"])
-app.include_router(router, prefix="/cards", tags=["cards"])
-app.include_router(router, prefix="/sessions", tags=["sessions"])
-app.include_router(router, prefix="/transports", tags=["transports"])
-app.include_router(router, prefix="/snils", tags=["snils"])
+app.include_router(router, tags=["CRUD"])
+# app.include_router(router_user, prefix="/auth", tags=["auth"])
+# app.include_router(router, prefix="/cards", tags=["cards"])
+# app.include_router(router, prefix="/sessions", tags=["sessions"])
+# app.include_router(router, prefix="/transports", tags=["transports"])
+# app.include_router(router, prefix="/snils", tags=["snils"])
 
 
 @app.get("/docs", include_in_schema=False)
