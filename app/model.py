@@ -1,11 +1,15 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, Text, Date, BigInteger, DateTime, SmallInteger
 from sqlalchemy.orm import relationship
-
+from sqlalchemy import MetaData
 from config import Base
+from config import engine
+
+metadata = MetaData()
 
 
 class User(Base):
     __tablename__ = 'users'
+    __table_args__ = {'extend_existing': True}
     id = Column(Integer, primary_key=True, index=True)
     date_of_birth = Column(Date)
     user_info_id = Column(Integer, ForeignKey('user_info.id'))
@@ -20,6 +24,7 @@ class User(Base):
 
 class UserInfo(Base):
     __tablename__ = 'user_info'
+    __table_args__ = {'extend_existing': True}
     id = Column(Integer, primary_key=True)
     phone = Column(Integer)
     user_type = Column(Integer)
@@ -32,6 +37,7 @@ class UserInfo(Base):
 
 class Auth(Base):
     __tablename__ = 'auth'
+    __table_args__ = {'extend_existing': True}
     login = Column(String, primary_key=True)
     password = Column(String)
     user_info_id = Column(Integer, ForeignKey('user_info.id'))
@@ -39,6 +45,7 @@ class Auth(Base):
 
 class Card(Base):
     __tablename__ = 'card'
+    __table_args__ = {'extend_existing': True}
     user_id = Column(Integer, ForeignKey('users.id'))
     expire_date = Column(Date)
     card_num = Column(BigInteger, primary_key=True)
@@ -46,6 +53,7 @@ class Card(Base):
 
 class Session(Base):
     __tablename__ = 'session'
+    __table_args__ = {'extend_existing': True}
     id = Column(Integer, primary_key=True)
     start_time = Column(DateTime)
     end_time = Column(DateTime)
@@ -55,12 +63,14 @@ class Session(Base):
 
 class Transport(Base):
     __tablename__ = 'transport'
+    __table_args__ = {'extend_existing': True}
     id = Column(SmallInteger, primary_key=True)
     transport_num = Column(String)
 
 
 class Snils(Base):
     __tablename__ = 'snils'
+    __table_args__ = {'extend_existing': True}
     snils_num = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('users.id'))
 
@@ -69,6 +79,7 @@ class Snils(Base):
 
 class Category(Base):
     __tablename__ = 'categories'
+    __table_args__ = {'extend_existing': True}
     id = Column(Integer, primary_key=True)
     name = Column(String)
 
@@ -77,6 +88,7 @@ class Category(Base):
 
 class Partner(Base):
     __tablename__ = 'partners'
+    __table_args__ = {'extend_existing': True}
     id = Column(Integer, primary_key=True)
     partner_id = Column(Integer, ForeignKey('promo.id'))
     category_id = Column(Integer, ForeignKey('categories.id'))
@@ -90,6 +102,7 @@ class Partner(Base):
 
 class Promo(Base):
     __tablename__ = 'promo'
+    __table_args__ = {'extend_existing': True}
     id = Column(Integer, primary_key=True)
     promo_id = Column(Integer, ForeignKey('promo_info.id'))
     partner_id = Column(Integer, ForeignKey('partners.id'))
@@ -103,16 +116,23 @@ class Promo(Base):
 
 class PromoInfo(Base):
     __tablename__ = 'promo_info'
+    __table_args__ = {'extend_existing': True}
     id = Column(Integer, primary_key=True)
     adv = Column(Text)
 
     info = relationship("UserInfo", back_populates="promo_info")
     promo = relationship("Promo", back_populates="promo_info")
 
+
 class PromoCategory(Base):
     __tablename__ = 'promo_categories'
+    __table_args__ = {'extend_existing': True}
     id = Column(Integer, primary_key=True)
     categorie_name = Column(String)
+
     promo = relationship("Promo", back_populates="promo_category")
-    categories = relationship("Categories", back_populates="partners")
-    promo_categories = relationship("PromoCategories", back_populates="promo_category")
+    categories = relationship("Category", back_populates="partners")
+    promo_categories = relationship("PromoCategory", back_populates="promo_category")
+
+
+metadata.create_all(engine)
