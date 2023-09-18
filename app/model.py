@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Date, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, Date, DateTime, ForeignKey, BigInteger, SmallInteger
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import MetaData
@@ -49,7 +49,7 @@ class Card(Base):
 
     user_id = Column(Integer, ForeignKey('public.user.id'))
     expire_date = Column(Date)
-    card_num = Column(Integer, primary_key=True)
+    card_num = Column(BigInteger, primary_key=True)
 
 
 class Session(Base):
@@ -60,14 +60,14 @@ class Session(Base):
     start_time = Column(DateTime)
     end_time = Column(DateTime)
     conductor_id = Column(Integer, ForeignKey('public.user.id'))
-    transport_id = Column(Integer, ForeignKey('public.transport.id'))
+    transport_id = Column(SmallInteger, ForeignKey('public.transport.id'))
 
 
 class Transport(Base):
     __tablename__ = 'transport'
     __table_args__ = {'schema': 'public'}
 
-    id = Column(Integer, primary_key=True)
+    id = Column(SmallInteger, primary_key=True)
     transport_num = Column(String)
 
 
