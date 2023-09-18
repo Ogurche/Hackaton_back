@@ -14,7 +14,7 @@ from config import DB_URL
 # access to the values within the .ini file in use.
 config = context.config
 section = config.config_ini_section
-config.set_section_option(section, "database", DB_URL)
+config.set_section_option(section, "DB_URL", DB_URL)
 
 
 # Interpret the config file for Python logging.
