@@ -90,7 +90,7 @@ class Partner(Base):
     __tablename__ = 'partners'
     __table_args__ = {'extend_existing': True}
     id = Column(Integer, primary_key=True)
-    partner_id = Column(Integer, ForeignKey('promo.id'))
+    partner_id = Column(Integer, ForeignKey('promo.promo_id'))
     category_id = Column(Integer, ForeignKey('categories.id'))
     info_id = Column(Integer, ForeignKey('user_info.id'))
     partner_name = Column(String)
