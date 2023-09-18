@@ -13,6 +13,7 @@ class UserSchema(BaseModel):
     name: str
     surname: str
     patronymic: Optional[str]
+
     # card: Optional["CardSchema"]
     # session: Optional[List["SessionSchema"]]
     # snils: Optional["SnilsSchema"]
@@ -51,6 +52,39 @@ class AuthSchema(BaseModel):
         orm_mode = True
 
 
+class UserCreate(BaseModel):
+    username: str
+    email: str
+    password: str
+
+    class Config:
+        orm_mode = True
+
+
+class UserRegistration(BaseModel):
+    date_of_birth: str
+    phone: str
+    user_type: int
+    mail: str
+    site: str
+    gender: int
+    name: str
+    surname: str
+    patronymic: Optional[str]
+    password: str
+
+    class Config:
+        orm_mode = True
+
+
+class UserLogin(BaseModel):
+    mail: str
+    password: str
+
+    class Config:
+        orm_mode = True
+
+
 class CardSchema(BaseModel):
     user_id: int
     expire_date: str
@@ -81,7 +115,6 @@ class TransportSchema(BaseModel):
 
 class SnilsSchema(BaseModel):
     snils_num: str
-
     class Config:
         orm_mode = True
 
