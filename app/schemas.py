@@ -88,7 +88,7 @@ class UserLogin(BaseModel):
 class CardSchema(BaseModel):
     user_id: int
     expire_date: str
-    card_num: str
+    card_num: int
 
     class Config:
         orm_mode = True
@@ -118,8 +118,8 @@ class SnilsSchema(BaseModel):
     class Config:
         orm_mode = True
 
-
-class UserCreate(BaseModel):
+#тут был UserCreate я хз где он использовался, но он дублируется
+class ManCreate(BaseModel):
     date_of_birth: str
     user_info_id: int
     gender: int
