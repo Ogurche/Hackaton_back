@@ -13,7 +13,7 @@ app = FastAPI()
 # Заголовок панели
 @app.on_event("startup")
 async def startup():
-    tprint("Singletons",space=10)
+    tprint("Singletons",space=5)
 
 
 
