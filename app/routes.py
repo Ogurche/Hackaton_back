@@ -4,7 +4,9 @@ from model import User, UserInfo, Auth, Card, Transport, Snils, Session
 from config import SessionLocal
 from schemas import UserCreate, UserInfoSchema, AuthSchema, UserSchema, UserInfoSchema, CardSchema, SessionSchema, \
     TransportSchema, SnilsSchema
-from fastapi.openapi.docs import get_swagger_ui_html
+# from fastapi.openapi.docs import get_swagger_ui_html
+from validate import get_password_hash , verify_password
+
 router = APIRouter()
 
 def get_db():
@@ -35,7 +37,6 @@ async def read_user(user_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="User not found")
     return db_user
 
-# @router.delete()
 
 # UserInfo endpoints
 @router.post("/user_info/")
@@ -58,20 +59,28 @@ async def read_user_info(user_info_id: int, db: Session = Depends(get_db)):
 # Auth endpoints
 @router.post("/auth/")
 async def create_auth(auth: AuthSchema, db: Session = Depends(get_db)):
-    db_auth = Auth(**auth.dict())
+    db_auth = Auth(
+        login = auth.login,
+        password = get_password_hash(auth.password)
+    )
     db.add(db_auth)
     db.commit()
     db.refresh(db_auth)
     return db_auth
 
-
-@router.get("/auth/{login}")
-async def read_auth(login: str, db: Session = Depends(get_db)):
+def read_auth(login: str, db: Session = Depends(get_db)):
     db_auth = db.query(Auth).filter(Auth.login == login).first()
     if not db_auth:
-        raise HTTPException(status_code=404, detail="Auth not found")
+        raise HTTPException(status_code=404, detail="User not found")
     return db_auth
 
+@router.post("/login/")
+async def login_user(auth: AuthSchema, db: Session = Depends(get_db)):
+    db_login = read_auth(auth.login, db)
+    if not verify_password(plain_password=auth.password, hashed_password=db_login.password):
+        raise HTTPException(status_code=404, detail="Incorrect password") 
+    user = db.query(User).filter(User.user_info == db_login.user_info).first()
+    return user
 
 # Card endpoints
 @router.post("/cards/")
