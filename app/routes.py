@@ -66,7 +66,7 @@ async def create_auth(auth: AuthSchema, db: Session = Depends(get_db)):
     db.add(db_auth)
     db.commit()
     db.refresh(db_auth)
-    return db_auth
+    return db_auth.login
 
 def read_auth(login: str, db: Session = Depends(get_db)):
     db_auth = db.query(Auth).filter(Auth.login == login).first()
