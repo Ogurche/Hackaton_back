@@ -2,12 +2,12 @@ from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
 from model import User, UserInfo, Auth, Card, Transport, Snils, Session
 from config import SessionLocal
-from schemas import UserCreate, UserInfoSchema, AuthSchema, UserSchema, UserInfoSchema, CardSchema, SessionSchema, \
-    TransportSchema, SnilsSchema
+from schemas import UserCreate, UserInfoSchema, AuthSchema, UserSchema, UserInfoSchema, CardSchema, SessionSchema, TransportSchema, SnilsSchema
 # from fastapi.openapi.docs import get_swagger_ui_html
-from validate import get_password_hash , verify_password
+from validate import get_password_hash, verify_password
 
 router = APIRouter()
+
 
 def get_db():
     db = SessionLocal()
@@ -15,9 +15,6 @@ def get_db():
         yield db
     finally:
         db.close()
-
-
-
 
 
 # User endpoints
@@ -60,27 +57,32 @@ async def read_user_info(user_info_id: int, db: Session = Depends(get_db)):
 @router.post("/auth/")
 async def create_auth(auth: AuthSchema, db: Session = Depends(get_db)):
     db_auth = Auth(
-        login = auth.login,
-        password = get_password_hash(auth.password)
+        login=auth.login,
+        password=get_password_hash(auth.password)
     )
     db.add(db_auth)
     db.commit()
     db.refresh(db_auth)
     return db_auth.login
 
+
 def read_auth(login: str, db: Session = Depends(get_db)):
     db_auth = db.query(Auth).filter(Auth.login == login).first()
     if not db_auth:
         raise HTTPException(status_code=404, detail="User not found")
-    return db_auth
+    return db_authмм
+
 
 @router.post("/login/")
 async def login_user(auth: AuthSchema, db: Session = Depends(get_db)):
     db_login = read_auth(auth.login, db)
     if not verify_password(plain_password=auth.password, hashed_password=db_login.password):
-        raise HTTPException(status_code=404, detail="Incorrect password") 
-    user = db.query(User).filter(User.user_info == db_login.user_info).first()
+        raise HTTPException(status_code=404, detail="Incorrect password")
+    user = db.query(User).join(User.user_info_rel).filter(User.user_info_rel.id == db_login.user_info).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
     return user
+
 
 # Card endpoints
 @router.post("/cards/")

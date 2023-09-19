@@ -1,13 +1,27 @@
 from fastapi import FastAPI
-from fastapi.openapi.docs import get_swagger_ui_html
-
+from fastapi.openapi.docs import get_swagger_ui_html, get_redoc_html
+from fastapi.openapi.utils import get_openapi
+from art import tprint
 import model
 from routes import router
 
 from config import engine
 
 model.Base.metadata.create_all(bind=engine)
-app = FastAPI()
+app = FastAPI(
+title="Singletons",
+    description="Задача 1 - Идентификация держателя Единой карты",
+    summary="Разработанный сервис который поможет партнерам проекта «Единая карта жителя Мурманской области» определить индивидуальные скидки, льготы обладателя карты, в офлайн и онлайн режиме.",
+    version="0.0.1",
+
+)
+
+
+# Заголовок панели
+@app.on_event("startup")
+async def startup():
+    tprint("Singletons",space=5)
+
 
 
 @app.get('/')
@@ -16,13 +30,9 @@ async def home():
 
 
 app.include_router(router, tags=["CRUD"])
-# app.include_router(router_user, prefix="/auth", tags=["auth"])
-# app.include_router(router, prefix="/cards", tags=["cards"])
-# app.include_router(router, prefix="/sessions", tags=["sessions"])
-# app.include_router(router, prefix="/transports", tags=["transports"])
-# app.include_router(router, prefix="/snils", tags=["snils"])
 
 
+# Swagger UI и OpenAPI документация
 @app.get("/docs", include_in_schema=False)
 async def custom_swagger_ui_html():
     return get_swagger_ui_html(
@@ -30,6 +40,18 @@ async def custom_swagger_ui_html():
         title="Custom Swagger UI"
     )
 
+@app.get("/redoc", include_in_schema=False)
+async def redoc_html():
+    return get_redoc_html(
+        openapi_url="/openapi.json",
+        title="ReDoc"
+    )
+
 @app.get("/openapi.json", include_in_schema=False)
-async def get_openapi():
-    return app.openapi()
+async def get_open_api_endpoint():
+    return get_openapi(
+        title="OpenAPI",
+        version="1.0.0",
+        description="OpenAPI schema",
+        routes=app.routes,
+    )

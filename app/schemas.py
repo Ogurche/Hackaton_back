@@ -8,12 +8,12 @@ T = TypeVar('T')
 class UserSchema(BaseModel):
     id: int
     date_of_birth: str
-    # user_info: Optional["UserInfoSchema"]
     gender: int
     name: str
     surname: str
     patronymic: Optional[str]
 
+    # user_info: Optional["UserInfoSchema"]
     # card: Optional["CardSchema"]
     # session: Optional[List["SessionSchema"]]
     # snils: Optional["SnilsSchema"]
@@ -115,10 +115,12 @@ class TransportSchema(BaseModel):
 
 class SnilsSchema(BaseModel):
     snils_num: str
+
     class Config:
         orm_mode = True
 
-#тут был UserCreate я хз где он использовался, но он дублируется
+
+# тут был UserCreate я хз где он использовался, но он дублируется
 class ManCreate(BaseModel):
     date_of_birth: str
     user_info_id: int
@@ -135,6 +137,53 @@ class UserUpdate(BaseModel):
     name: Optional[str]
     surname: Optional[str]
     patronymic: Optional[str]
+
+
+class Category(BaseModel):
+    id: int
+    name: str
+
+    class Config:
+        orm_mode = True
+
+class Partner(BaseModel):
+    id: int
+    partner_name: str
+    category_id: int
+    info_id: int
+    promo_id: int
+
+    class Config:
+        orm_mode = True
+
+class PromoInfo(BaseModel):
+    id: int
+    title: str
+    description: str
+    image_url: Optional[str]
+    adv: Optional[str]
+
+    class Config:
+        orm_mode = True
+
+class PromoCategory(BaseModel):
+    id: int
+    category: Category
+    partner: Partner
+    promo_info: PromoInfo
+
+    class Config:
+        orm_mode = True
+
+class Promo(BaseModel):
+    id: int
+    promo_info: PromoInfo
+    partner: Partner
+    promo_category: PromoCategory
+    isactive: bool
+
+    class Config:
+        orm_mode = True
 
 
 class ResponseUser(BaseModel):

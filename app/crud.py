@@ -4,7 +4,7 @@ import model
 import schemas
 
 
-# CRUD операции для модели Userr
+# CRUD операции для модели User
 def get_user(db: Session, user_id: int):
     return db.query(model.User).filter(model.User.id == user_id).first()
 
