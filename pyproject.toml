@@ -16,6 +16,7 @@ psycopg2 = "^2.9.7"
 passlib = "^1.7.4"
 bcrypt = "^4.0.1"
 alembic = "^1.12.0"
+art = "^6.0"
 
 
 [build-system]

@@ -90,14 +90,14 @@ class Partner(Base):
     __tablename__ = 'partners'
     __table_args__ = {'extend_existing': True}
     id = Column(Integer, primary_key=True)
-    partner_id = Column(Integer, ForeignKey('promo.promo_id'))
+    # partner_id = Column(Integer, ForeignKey('promo.promo_id'))
     category_id = Column(Integer, ForeignKey('categories.id'))
-    info_id = Column(Integer, ForeignKey('user_info.id'))
+    info_id = Column(Integer, ForeignKey('promo_info.id'))
     partner_name = Column(String)
 
     category = relationship("Category", back_populates="partners")
-    promo = relationship("Promo", back_populates="partners")
-    info = relationship("UserInfo", back_populates="promo_info")
+    # promo = relationship("Promo", back_populates="partners")
+    info = relationship("PromoInfo", back_populates="promo_info")
 
 
 class Promo(Base):
@@ -120,7 +120,7 @@ class PromoInfo(Base):
     id = Column(Integer, primary_key=True)
     adv = Column(Text)
 
-    info = relationship("UserInfo", back_populates="promo_info")
+    # info = relationship("UserInfo", back_populates="promo_info")
     promo = relationship("Promo", back_populates="promo_info")
 
 
@@ -131,7 +131,7 @@ class PromoCategory(Base):
     categorie_name = Column(String)
 
     promo = relationship("Promo", back_populates="promo_category")
-    categories = relationship("Category", back_populates="partners")
+    # categories = relationship("Category", back_populates="partners")
     promo_categories = relationship("PromoCategory", back_populates="promo_category")
 
 

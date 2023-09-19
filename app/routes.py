@@ -70,7 +70,7 @@ def read_auth(login: str, db: Session = Depends(get_db)):
     db_auth = db.query(Auth).filter(Auth.login == login).first()
     if not db_auth:
         raise HTTPException(status_code=404, detail="User not found")
-    return db_authмм
+    return db_auth.login
 
 
 @router.post("/login/")
